@@ -1,0 +1,8 @@
+version: "1"
+services:
+  role-service:
+    build: ./
+    command:
+      - java ./com.medicalcenter.roleservice.RoleServiceApplication.java
+    ports:
+      - 8090:8000

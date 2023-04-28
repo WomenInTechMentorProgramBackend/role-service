@@ -1,6 +1,0 @@
-version: "1"
-services:
-  role-service:
-    image: role-service
-    ports:
-      - 8090:8000

@@ -1,0 +1,407 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a sample server role-service."
+  version: "1.0.0"
+  title: "Swagger role-service"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "wit@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "medicalcenter.roleservice"
+basePath: "/v2"
+tags:
+  - name: "User"
+    description: "Users"
+  - name: "role"
+    description: "Users roles"
+  - name: "permission"
+    description: "Roles permissions"
+schemes:
+  - "http"
+paths:
+  /createUser:
+    post:
+      tags:
+        - "user"
+      summary: "Add a new user to the service"
+      description: ""
+      operationId: "addUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User object that needs to be added to the service"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        405:
+          description: "Invalid input"
+  /updateUser:
+    put:
+      tags:
+        - "user"
+      summary: "Update an existing user"
+      description: ""
+      operationId: "updateUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User object that needs to be added to the service"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "User not found"
+        405:
+          description: "Validation exception"
+  /user/findByExternalID/{externalID}:
+    get:
+      tags:
+        - "user"
+      summary: "Finds User by external id"
+      operationId: "findUserByExternalID"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "externalID"
+          in: "path"
+          description: "External id that need to be considered for filter"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Invalid externalID value"
+  /user/deleteByExternalID/{externalID}:
+    delete:
+      tags:
+        - "user"
+      summary: "Deletes a user"
+      description: ""
+      operationId: "deleteUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "externalID"
+          in: "path"
+          description: "External id that need to be considered for filter"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid user name value"
+  /createRole:
+    post:
+      tags:
+        - "role"
+      summary: "Add a new role to the service"
+      description: ""
+      operationId: "addRole"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Role object that needs to be added to the service"
+          required: true
+          schema:
+            $ref: "#/definitions/Role"
+      responses:
+        405:
+          description: "Invalid input"
+  /updateRole:
+    put:
+      tags:
+        - "role"
+      summary: "Update an existing role"
+      description: ""
+      operationId: "updateRole"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Role object that needs to be added to the service"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid roles name supplied"
+        404:
+          description: "Roles name not found"
+        405:
+          description: "Validation exception"
+  /role/findByName/{rolesname}:
+    get:
+      tags:
+        - "role"
+      summary: "Finds Role by roles name"
+      operationId: "findRoleByRolesName"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "rolesName"
+          in: "path"
+          description: "Roles name that need to be considered for filter"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+            items:
+              $ref: "#/definitions/Role"
+        400:
+          description: "Invalid roles name value"
+  /role/deleteByRolesName/{rolesName}:
+    delete:
+      tags:
+        - "role"
+      summary: "Deletes a role"
+      description: ""
+      operationId: "deleteRole"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "rolesName"
+          in: "path"
+          description: "Roles name that need to be considered for filter"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid roles name value"
+  /createPermission:
+    post:
+      tags:
+        - "permission"
+      summary: "Add a new permission to the service"
+      description: ""
+      operationId: "addRole"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Role object that needs to be added to the service"
+          required: true
+          schema:
+            $ref: "#/definitions/Role"
+      responses:
+        405:
+          description: "Invalid input"
+  /updateRole:
+    put:
+      tags:
+        - "role"
+      summary: "Update an existing role"
+      description: ""
+      operationId: "updateRole"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Role object that needs to be added to the service"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid roles name supplied"
+        404:
+          description: "Roles name not found"
+        405:
+          description: "Validation exception"
+  /role/findByName/{rolesname}:
+    get:
+      tags:
+        - "role"
+      summary: "Finds Role by roles name"
+      operationId: "findRoleByRolesName"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "rolesName"
+          in: "path"
+          description: "Roles name that need to be considered for filter"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+            items:
+              $ref: "#/definitions/Role"
+        400:
+          description: "Invalid roles name value"
+  /user/deleteByRolesName/{rolesName}:
+    delete:
+      tags:
+        - "role"
+      summary: "Deletes a role"
+      description: ""
+      operationId: "deleteRole"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "rolesName"
+          in: "path"
+          description: "Roles name that need to be considered for filter"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid roles name value"
+definitions:
+  Order:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      petId:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int32"
+      shipDate:
+        type: "string"
+        format: "date-time"
+      status:
+        type: "string"
+        description: "Order Status"
+        enum:
+          - "placed"
+          - "approved"
+          - "delivered"
+      complete:
+        type: "boolean"
+        default: false
+    xml:
+      name: "Order"
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Category"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Pet:
+    type: "object"
+    required:
+      - "name"
+      - "photoUrls"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "doggie"
+      photoUrls:
+        type: "array"
+        xml:
+          name: "photoUrl"
+          wrapped: true
+        items:
+          type: "string"
+      tags:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Tag"
+      status:
+        type: "string"
+        description: "pet status in the store"
+        enum:
+          - "available"
+          - "pending"
+          - "sold"
+    xml:
+      name: "Pet"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

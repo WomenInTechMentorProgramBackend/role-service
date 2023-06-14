@@ -1,5 +1,35 @@
 services:
-  role-service:
-    build: ./
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: roleservice_db
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - 8090:8000
+      - "5433:5432"
+    command: postgres -c 'max_connections=300'
+
+  postgres_admin:
+    image: dpage/pgadmin4:latest
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: wit@wit.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "5050:80"
+
+  role-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/roleservice_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123
+    ports:
+      - "8090:8000"
+    depends_on:
+      - db

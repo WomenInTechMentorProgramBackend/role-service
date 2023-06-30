@@ -1,5 +1,5 @@
 ---
-swagger: "2.0"
+swagger: "latest"
 info:
   description: "This is a sample server role-service."
   version: "1.0.0"
@@ -13,12 +13,12 @@ info:
 host: "medicalcenter.roleservice"
 basePath: "/v1"
 tags:
-  - name: "User"
-    description: "Users"
-  - name: "role"
+  - name: "user"
+    description: "this service stores short information about the user"
+  - name: "there are only a few roles"
     description: "Users roles"
   - name: "permission"
-    description: "Roles permissions"
+    description: "permissions are used to access certain services"
 schemes:
   - "http"
 paths:
@@ -68,18 +68,18 @@ paths:
           description: "User not found"
         405:
           description: "Validation exception"
-  /user/findByExternalID/{externalID}:
+  /user/findUserById/{id}:
     get:
       tags:
         - "user"
-      summary: "Finds User by external id"
-      operationId: "findUserByExternalID"
+      summary: "Finds User by id"
+      operationId: "findUserId"
       produces:
         - "application/json"
       parameters:
-        - name: "externalID"
+        - name: "id"
           in: "path"
-          description: "External id that need to be considered for filter"
+          description: "Id that need to be considered for filter"
           required: true
           type: "string"
       responses:
@@ -90,8 +90,8 @@ paths:
             items:
               $ref: "#/definitions/User"
         400:
-          description: "Invalid externalID value"
-  /user/deleteByExternalID/{externalID}:
+          description: "Invalid id value"
+  /user/deleteUserById/{id}:
     delete:
       tags:
         - "user"
@@ -101,9 +101,9 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "externalID"
+        - name: "id"
           in: "path"
-          description: "External id that need to be considered for filter"
+          description: "Id that need to be considered for filter"
           required: true
           type: "string"
       responses:
@@ -155,16 +155,16 @@ paths:
           description: "Roles name not found"
         405:
           description: "Validation exception"
-  /role/findByName/{rolesName}:
+  /role/findRoleById/{rolesId}:
     get:
       tags:
         - "role"
-      summary: "Finds Role by roles name"
-      operationId: "findRoleByRolesName"
+      summary: "Finds Role by roles id"
+      operationId: "findRoleByRolesId"
       produces:
         - "application/json"
       parameters:
-        - name: "rolesName"
+        - name: "rolesId"
           in: "path"
           description: "Roles name that need to be considered for filter"
           required: true
@@ -177,8 +177,8 @@ paths:
             items:
               $ref: "#/definitions/Role"
         400:
-          description: "Invalid roles name value"
-  /role/deleteByRolesName/{rolesName}:
+          description: "Invalid roles id value"
+  /role/deleteByRolesId/{rolesId}:
     delete:
       tags:
         - "role"
@@ -188,14 +188,14 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "rolesName"
+        - name: "rolesId"
           in: "path"
-          description: "Roles name that need to be considered for filter"
+          description: "Roles id that need to be considered for filter"
           required: true
           type: "string"
       responses:
         400:
-          description: "Invalid roles name value"
+          description: "Invalid roles id value"
   /createPermission:
     post:
       tags:
@@ -242,16 +242,16 @@ paths:
           description: "Roles name not found"
         405:
           description: "Validation exception"
-  /permission/findByName/{permissionName}:
+  /permission/findById/{permissionId}:
     get:
       tags:
-        - "Permission"
-      summary: "Finds permission by permission name"
-      operationId: "findPermissionByPermissionsName"
+        - "permission"
+      summary: "Finds permission by permission id"
+      operationId: "findPermissionByPermissionsId"
       produces:
         - "application/json"
       parameters:
-        - name: "permissionName"
+        - name: "permissionId"
           in: "path"
           description: "Permission name that need to be considered for filter"
           required: true
@@ -264,8 +264,8 @@ paths:
             items:
               $ref: "#/definitions/Permission"
         400:
-          description: "Invalid roles name value"
-  /user/deleteByPermissionsName/{PermissionsName}:
+          description: "Invalid roles id value"
+  /user/deleteByPermissionsId/{permissionsId}:
     delete:
       tags:
         - "permission"
@@ -275,14 +275,14 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "PermissionsName"
+        - name: "permissionsId"
           in: "path"
           description: "Permissions name that need to be considered for filter"
           required: true
           type: "string"
       responses:
         400:
-          description: "Invalid Permissions name value"
+          description: "Invalid permissions id value"
 definitions:
   User:
     type: "object"
@@ -332,6 +332,8 @@ definitions:
         type: "string"
       updatedBy:
         type: "string"
+      isActive:
+        type: "boolean"
     xml:
       name: "Role"
   Permission:
@@ -354,6 +356,8 @@ definitions:
         type: "string"
       updatedBy:
         type: "string"
+      isActive:
+        type: "boolean"
     xml:
       name: "Permission"
   ApiResponse:

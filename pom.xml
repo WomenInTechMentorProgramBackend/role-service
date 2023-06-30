@@ -83,6 +83,25 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp/okhttp -->
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>2.7.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp/logging-interceptor -->
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>logging-interceptor</artifactId>
+			<version>2.7.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.gsonfire/gson-fire -->
+		<dependency>
+			<groupId>io.gsonfire</groupId>
+			<artifactId>gson-fire</artifactId>
+			<version>1.8.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -98,6 +117,25 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>2.4.32</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/codegen/swagger.yaml</inputSpec>
+							<language>java</language>
+							<configOptions>
+								<sourceFolder>gen</sourceFolder>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

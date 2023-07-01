@@ -10,22 +10,22 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "medicalcenter.roleservice"
-basePath: "/v1"
+host: "localhost:8090"
+basePath: "/role-service"
 tags:
   - name: "user"
     description: "this service stores short information about the user"
-  - name: "there are only a few roles"
-    description: "Users roles"
+  - name: "role"
+    description: "there are only a few roles"
   - name: "permission"
     description: "permissions are used to access certain services"
 schemes:
   - "http"
 paths:
-  /createUser:
+  /users:
     post:
       tags:
-        - "user"
+        - "users"
       summary: "Add a new user to the service"
       description: ""
       operationId: "addUser"
@@ -39,11 +39,10 @@ paths:
           description: "User object that needs to be added to the service"
           required: true
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/UserDto"
       responses:
         405:
           description: "Invalid input"
-  /updateUser:
     put:
       tags:
         - "user"
@@ -60,7 +59,7 @@ paths:
           description: "User object that needs to be added to the service"
           required: true
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/UserDto"
       responses:
         400:
           description: "Invalid ID supplied"
@@ -68,7 +67,7 @@ paths:
           description: "User not found"
         405:
           description: "Validation exception"
-  /user/findUserById/{id}:
+  /users/{id}:
     get:
       tags:
         - "user"
@@ -88,10 +87,9 @@ paths:
           schema:
             type: "string"
             items:
-              $ref: "#/definitions/User"
+              $ref: "#/definitions/UserDto"
         400:
           description: "Invalid id value"
-  /user/deleteUserById/{id}:
     delete:
       tags:
         - "user"
@@ -109,7 +107,7 @@ paths:
       responses:
         400:
           description: "Invalid user name value"
-  /createRole:
+  /roles:
     post:
       tags:
         - "role"
@@ -126,11 +124,10 @@ paths:
           description: "Role object that needs to be added to the service"
           required: true
           schema:
-            $ref: "#/definitions/Role"
+            $ref: "#/definitions/RoleDto"
       responses:
         405:
           description: "Invalid input"
-  /updateRole:
     put:
       tags:
         - "role"
@@ -147,7 +144,7 @@ paths:
           description: "Role object that needs to be added to the service"
           required: true
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/RoleDto"
       responses:
         400:
           description: "Invalid roles name supplied"
@@ -155,7 +152,7 @@ paths:
           description: "Roles name not found"
         405:
           description: "Validation exception"
-  /role/findRoleById/{rolesId}:
+  /roles/{rolesId}:
     get:
       tags:
         - "role"
@@ -175,10 +172,9 @@ paths:
           schema:
             type: "string"
             items:
-              $ref: "#/definitions/Role"
+              $ref: "#/definitions/RoleDto"
         400:
           description: "Invalid roles id value"
-  /role/deleteByRolesId/{rolesId}:
     delete:
       tags:
         - "role"
@@ -196,7 +192,7 @@ paths:
       responses:
         400:
           description: "Invalid roles id value"
-  /createPermission:
+  /permissions:
     post:
       tags:
         - "permission"
@@ -213,11 +209,10 @@ paths:
           description: "Permission object that needs to be added to the service"
           required: true
           schema:
-            $ref: "#/definitions/Permission"
+            $ref: "#/definitions/PermissionDto"
       responses:
         405:
           description: "Invalid input"
-  /updatePermission:
     put:
       tags:
         - "permission"
@@ -234,15 +229,15 @@ paths:
           description: "Permission object that needs to be added to the service"
           required: true
           schema:
-            $ref: "#/definitions/Permission"
+            $ref: "#/definitions/PermissionDto"
       responses:
         400:
-          description: "Invalid roles name supplied"
+          description: "Invalid roles id supplied"
         404:
-          description: "Roles name not found"
+          description: "Roles id not found"
         405:
           description: "Validation exception"
-  /permission/findById/{permissionId}:
+  /permissions/{permissionId}:
     get:
       tags:
         - "permission"
@@ -262,10 +257,9 @@ paths:
           schema:
             type: "string"
             items:
-              $ref: "#/definitions/Permission"
+              $ref: "#/definitions/PermissionDto"
         400:
           description: "Invalid roles id value"
-  /user/deleteByPermissionsId/{permissionsId}:
     delete:
       tags:
         - "permission"
@@ -284,7 +278,7 @@ paths:
         400:
           description: "Invalid permissions id value"
 definitions:
-  User:
+  UserDto:
     type: "object"
     properties:
       id:
@@ -305,10 +299,10 @@ definitions:
       role:
         type: "object"
         description: "Users role"
-        $ref: "#/definitions/Role"
+        $ref: "#/definitions/RoleDto"
     xml:
-      name: "User"
-  Role:
+      name: "UserDto"
+  RoleDto:
     type: "object"
     properties:
       id:
@@ -321,7 +315,7 @@ definitions:
       permissions:
         type: "array"
         items:
-          $ref: "#/definitions/Permission"
+          $ref: "#/definitions/PermissionDto"
       createdAt:
         type: "string"
         format: "date-time"
@@ -335,8 +329,8 @@ definitions:
       isActive:
         type: "boolean"
     xml:
-      name: "Role"
-  Permission:
+      name: "RoleDto"
+  PermissionDto:
     type: "object"
     properties:
       id:
@@ -359,8 +353,18 @@ definitions:
       isActive:
         type: "boolean"
     xml:
-      name: "Permission"
-  ApiResponse:
+      name: "PermissionDto"
+  ResponseModel:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+  RequestModel:
     type: "object"
     properties:
       code:

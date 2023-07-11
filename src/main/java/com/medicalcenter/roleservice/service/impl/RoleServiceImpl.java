@@ -1,6 +1,7 @@
 package com.medicalcenter.roleservice.service.impl;
 
 import com.medicalcenter.roleservice.entity.Role;
+import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
 import com.medicalcenter.roleservice.repository.RoleRepository;
 import com.medicalcenter.roleservice.service.RoleService;
@@ -24,11 +25,19 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Optional<Role> getRoleById(UUID id) {
-        return roleRepository.findById(id);
+        if (roleRepository.existsById(id)) {
+            return roleRepository.findById(id);
+        } else {
+            throw new ResourceNotFoundException("Role not found with id: " + id);
+        }
     }
 
     @Override
     public Role saveRole(Role role) {
+        Optional<Role> savedRole = roleRepository.findByName(role.getName());
+        if (savedRole.isPresent()) {
+            throw new ObjectAlreadyExistException("Role already exists with name: " + role.getName());
+        }
         return roleRepository.save(role);
     }
 

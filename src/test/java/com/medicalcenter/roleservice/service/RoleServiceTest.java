@@ -44,7 +44,7 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for getAllRoles method")
     @Test
     void getAllRoles_ShouldReturnListOfRoles() {
-        Role role1 = Role.builder()
+        var role1 = Role.builder()
                 .id(UUID.randomUUID())
                 .name("Role 2")
                 .description("Description 2")
@@ -54,7 +54,7 @@ public class RoleServiceTest {
 
         when(roleRepository.findAll()).thenReturn(List.of(role,role1));
 
-        List<Role> roleList = roleService.getAllRoles();
+        var roleList = roleService.getAllRoles();
 
         assertEquals(2, roleList.size());
         verify(roleRepository, times(1)).findAll();
@@ -63,11 +63,11 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for getRoleById method")
     @Test
     void getRoleById_ExistingId_ShouldReturnRoleObject() {
-        UUID roleId = role.getId();
+        var roleId = role.getId();
         when(roleRepository.existsById(roleId)).thenReturn(true);
         when(roleRepository.findById(roleId)).thenReturn(Optional.of(role));
 
-        Optional <Role> result = roleService.getRoleById(roleId);
+        var result = roleService.getRoleById(roleId);
 
         assertTrue(result.isPresent());
         assertEquals(role, result.get());
@@ -78,7 +78,7 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for getRoleById method throws ResourceNotFoundException")
     @Test
     void getRoleById_NotExistingID_ShouldThrowResourceNotFoundException() {
-        UUID roleId = UUID.randomUUID();
+        var roleId = UUID.randomUUID();
 
         when(roleRepository.existsById(roleId)).thenReturn(false);
 
@@ -94,7 +94,7 @@ public class RoleServiceTest {
 
         when(roleRepository.save(role)).thenReturn(role);
 
-        Role result = roleService.saveRole(role);
+        var result = roleService.saveRole(role);
 
         assertNotNull(result);
         assertEquals(role, result);
@@ -117,7 +117,7 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for updateRole method")
     @Test
     void updateRole_ExistingId_ShouldReturnUpdatedRole() {
-        UUID roleId = role.getId();
+        var roleId = role.getId();
 
         when(roleRepository.findById(roleId)).thenReturn(Optional.of(role));
         when(roleRepository.save(role)).thenReturn(role);
@@ -127,10 +127,8 @@ public class RoleServiceTest {
         role.setActive(false);
         role.setCreatedBy("Updated User");
 
-        // Act
-        Role updatedRole = roleService.updateRole(roleId, role);
+        var updatedRole = roleService.updateRole(roleId, role);
 
-        // Assert
         assertNotNull(updatedRole);
         assertEquals(role.getName(), updatedRole.getName());
         assertEquals(role.getDescription(), updatedRole.getDescription());
@@ -142,8 +140,8 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for updateRole method throws ResourceNotFoundException")
     @Test
     void updateRole_NotExistingId_ShouldThrowResourceNotFoundException() {
-        UUID roleId = UUID.randomUUID();
-        Role updatedRole = new Role();
+        var roleId = UUID.randomUUID();
+        var updatedRole = new Role();
         updatedRole.setName("Updated Role");
         updatedRole.setDescription("Updated Description");
         updatedRole.setActive(false);
@@ -159,10 +157,10 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for deleteRoleById method")
     @Test
     void deleteRoleById_ExistingId_ShouldReturnDeletedMessage() {
-        UUID roleId = role.getId();
+        var roleId = role.getId();
         when(roleRepository.existsById(roleId)).thenReturn(true);
 
-        String result = roleService.deleteRoleById(roleId);
+        var result = roleService.deleteRoleById(roleId);
 
         assertNotNull(result);
         assertEquals("Role(" + roleId + ")" +  " has been deleted!", result);
@@ -173,7 +171,7 @@ public class RoleServiceTest {
     @DisplayName("JUnit test for deleteRoleById method throws ResourceNotFoundException")
     @Test
     void deleteRoleById_NotExistingId_ShouldThrowResourceNotFoundException() {
-        UUID roleId = UUID.randomUUID();
+        var roleId = UUID.randomUUID();
 
         when(roleRepository.existsById(roleId)).thenReturn(false);
 

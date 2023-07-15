@@ -7,7 +7,7 @@
 ### Running with Docker ###
 
 #### Prerequisites ####
-Before executing the commands, make sure you have Docker installed.
+Before executing the commands, make sure you have Maven and Docker installed.
 
 * To download the repository from github, you need to use the terminal command
 `git clone git@github.com:WomenInTechMentorProgramBackend/role-service.git`
@@ -49,6 +49,8 @@ Name: medcenter
 
 #### Prerequisites ####
 Before executing the commands, make sure you have the following:
+- JDK installed locally.
+- Maven installed locally.
 - PostgreSQL installed locally.
 - PgAdmin to create a database.
 

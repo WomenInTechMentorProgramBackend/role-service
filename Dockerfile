@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:latest
 ARG DEPENDENCY=target/dependency
 COPY target/*.jar app.jar
 COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib

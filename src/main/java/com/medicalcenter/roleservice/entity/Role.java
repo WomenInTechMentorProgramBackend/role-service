@@ -29,7 +29,8 @@ public class Role implements Serializable {
     private String description;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
-    private boolean active;
+    @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
+    private boolean isActive = false;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

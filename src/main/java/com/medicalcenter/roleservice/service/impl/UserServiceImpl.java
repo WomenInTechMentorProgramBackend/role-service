@@ -5,7 +5,7 @@ import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
 import com.medicalcenter.roleservice.repository.UserRepository;
 import com.medicalcenter.roleservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<User> getAllUsers() {

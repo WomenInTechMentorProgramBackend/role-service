@@ -1,6 +1,7 @@
 package com.medicalcenter.roleservice.service.impl;
 
 import com.medicalcenter.roleservice.entity.User;
+import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
 import com.medicalcenter.roleservice.repository.UserRepository;
 import com.medicalcenter.roleservice.service.UserService;
@@ -24,12 +25,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getUserById(UUID id) {
-        return userRepository.findById(id);
+        if (userRepository.existsById(id)) {
+            return userRepository.findById(id);
+        } else {
+            throw new ResourceNotFoundException("User not fount with id: " + id);        }
     }
 
     @Override
     public User saveUser(User user) {
-        return userRepository.save(user);
+        Optional<User> saveUser = userRepository.findByExternalId(user.getExternalId());
+        if (saveUser.isPresent()) {
+            throw new ObjectAlreadyExistException("User already exists with externalId: " + user.getExternalId());
+        }
+            return userRepository.save(user);
     }
 
     @Override

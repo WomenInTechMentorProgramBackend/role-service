@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +37,8 @@ public class RoleServiceTest {
                 .id(UUID.randomUUID())
                 .name("Role 1")
                 .description("Description 1")
-                .active(true)
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
                 .createdBy("Test User 1")
                 .build();
     }
@@ -48,7 +50,8 @@ public class RoleServiceTest {
                 .id(UUID.randomUUID())
                 .name("Role 2")
                 .description("Description 2")
-                .active(true)
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
                 .createdBy("Test User 2")
                 .build();
 
@@ -125,6 +128,7 @@ public class RoleServiceTest {
         role.setName("Updated Role");
         role.setDescription("Updated Description");
         role.setActive(false);
+        role.setCreatedAt(LocalDateTime.now());
         role.setCreatedBy("Updated User");
 
         var updatedRole = roleService.updateRole(roleId, role);
@@ -144,7 +148,8 @@ public class RoleServiceTest {
         var updatedRole = new Role();
         updatedRole.setName("Updated Role");
         updatedRole.setDescription("Updated Description");
-        updatedRole.setActive(false);
+        updatedRole.setActive(true);
+        updatedRole.setCreatedAt(LocalDateTime.now());
         updatedRole.setCreatedBy("Updated User");
 
         when(roleRepository.findById(roleId)).thenReturn(Optional.empty());

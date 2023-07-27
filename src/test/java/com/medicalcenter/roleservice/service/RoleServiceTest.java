@@ -36,7 +36,7 @@ public class RoleServiceTest {
                 .id(UUID.randomUUID())
                 .name("Role 1")
                 .description("Description 1")
-                .active(true)
+                .isActive(true)
                 .createdBy("Test User 1")
                 .build();
     }
@@ -48,7 +48,7 @@ public class RoleServiceTest {
                 .id(UUID.randomUUID())
                 .name("Role 2")
                 .description("Description 2")
-                .active(true)
+                .isActive(true)
                 .createdBy("Test User 2")
                 .build();
 

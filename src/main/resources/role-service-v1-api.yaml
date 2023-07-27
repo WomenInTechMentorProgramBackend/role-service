@@ -458,12 +458,12 @@ components:
         createdBy:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         updatedBy:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         roles:
           type: "array"
@@ -493,7 +493,7 @@ components:
         description:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 1000
           example: "something about this role"
         permissions:
           type: "array"
@@ -512,12 +512,12 @@ components:
         createdBy:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         updatedBy:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         isActive:
           type: "boolean"
@@ -544,7 +544,7 @@ components:
         description:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 1000
           example: "something about permission"
         createdAt:
           type: "string"
@@ -559,12 +559,12 @@ components:
         createdBy:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         updatedBy:
           type: "string"
           minLength: 1
-          maxLength: 255
+          maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         isActive:
           type: "boolean"

@@ -47,8 +47,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDto'
-        '405':
-          description: Validation input
+        '400':
+          description: Bad Request
+        '404':
+          description:  Role not found
+        '409':
+          description: Object already exist
   /users:
     get:
       tags:
@@ -64,6 +68,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserDto'
+        '400':
+          description: Bad Request
   /users/{userId}/addRole/{roleId}:
     put:
       tags:
@@ -92,11 +98,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: User or role not found
-        '405':
-          description: Validation exception
+        '409':
+          description: Object already exist
   /users/{userId}/deleteRole/{roleId}:
     put:
       tags:
@@ -125,7 +131,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: User or role not found
         '405':
@@ -152,7 +158,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: User not found
         '405':
@@ -173,12 +179,8 @@ paths:
       responses:
         '200':
           description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: User not found
         '405':
@@ -198,6 +200,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RoleDto'
+        '400':
+          description: Bad Request
     post:
       tags:
         - role
@@ -218,8 +222,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RoleDto'
-        '405':
-          description: Validation input
+        '400':
+          description: Bad Request
+        '409':
+          description: Object already exist
   /roles/{roleId}:
     get:
       tags:
@@ -242,7 +248,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RoleDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: Role not found
         '405':
@@ -274,8 +280,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RoleDto'
-        '405':
-          description: Validation input
+        '400':
+          description: Bad Request
+        '404':
+          description: Role not found
+        '409':
+          description: Object already exist
     delete:
       tags:
         - role
@@ -292,12 +302,8 @@ paths:
       responses:
         '200':
           description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RoleDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: Role not found
         '405':
@@ -326,7 +332,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/RoleDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: Role not found
         '405':
@@ -346,6 +352,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PermissionDto'
+        '400':
+          description: Bad Request
   /permissions/{roleId}:
     post:
       tags:
@@ -367,8 +375,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PermissionDto'
-        '405':
-          description: Validation input
+        '400':
+          description: Bad Request
+        '404':
+          description: Role not found
+        '409':
+          description: Object already exist
   /permissions/{permissionId}:
     get:
       tags:
@@ -391,7 +403,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PermissionDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: Permission not found
         '405':
@@ -423,6 +435,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PermissionDto'
+        '400':
+          description: Bad Request
+        '404':
+          description: Role not found
         '405':
           description: Validation input
     delete:
@@ -441,12 +457,8 @@ paths:
       responses:
         '200':
           description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PermissionDto'
         '400':
-          description: Invalid ID supplied
+          description: Bad Request
         '404':
           description: Permission not found
         '405':

@@ -330,7 +330,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RoleDto'
+                  $ref: '#/components/schemas/PermissionDto'
         '400':
           description: Bad Request
         '404':
@@ -466,168 +466,154 @@ paths:
 components:
   schemas:
     UserDto:
-      type: "object"
+      type: object
       properties:
         id:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           example: "550e8400-e29b-41d4-a716-446655440000"
         externalId:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           uniqueItems: true
           example: "550e8400-e29b-41d4-a716-446655440000"
         createdAt:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           format: "date-time"
         updatedAt:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           format: "date-time"
         createdBy:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         updatedBy:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         roles:
-          type: "array"
+          type: array
           description: "User roles"
           items:
            $ref: "#/components/schemas/RoleDto"
       required:
-        - "id"
-        - "externalId"
-        - "createdAt"
-        - "roles"
-        - "createdBy"
+        - id
+        - externalId
+        - roles
     RoleDto:
-      type: "object"
+      type: object
       properties:
         id:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           example: "550e8400-e29b-41d4-a716-446655440000"
         name:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 30
           uniqueItems: true
           example: "admin"
         description:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 1000
           example: "something about this role"
         permissions:
-          type: "array"
+          type: array
           items:
             $ref: "#/components/schemas/PermissionDto"
         createdAt:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           format: "date-time"
         updatedAt:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           format: "date-time"
         createdBy:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         updatedBy:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         isActive:
-          type: "boolean"
+          type: boolean
       required:
-        - "id"
-        - "name"
-        - "isActive"
-        - "createdAt"
-        - "createdBy"
+        - name
+        - isActive
     PermissionDto:
-      type: "object"
+      type: object
       properties:
         id:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           example: "550e8400-e29b-41d4-a716-446655440000"
         name:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 30
           uniqueItems: true
           example: "creatUser"
         description:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 1000
           example: "something about permission"
         createdAt:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           format: "date-time"
         updatedAt:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 255
           format: "date-time"
         createdBy:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         updatedBy:
-          type: "string"
+          type: string
           minLength: 1
           maxLength: 50
           example: "u550e8400-e29b-41d4-a716-446655440000"
         isActive:
-          type: "boolean"
+          type: boolean
       required:
-        - "id"
-        - "name"
-        - "isActive"
-        - "createdAt"
-        - "createdBy"
-    ResponseModel:
-      type: "object"
+        - name
+        - isActive
+    ErrorModel:
+      type: object
       properties:
-        code:
-          type: "integer"
-          format: "int32"
-        type:
-          type: "string"
+        statusCode:
+          type: integer
+          format: int32
+        httpStatus:
+          type: string
+        timestamp:
+          type: string
         message:
-          type: "string"
-    RequestModel:
-      type: "object"
-      properties:
-        code:
-          type: "integer"
-          format: "int32"
-        type:
-          type: "string"
-        message:
-          type: "string"
+          type: string
+        description:
+          type: string
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

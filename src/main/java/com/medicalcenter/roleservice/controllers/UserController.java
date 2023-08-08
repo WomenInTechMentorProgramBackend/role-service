@@ -3,12 +3,12 @@ package com.medicalcenter.roleservice.controllers;
 import com.medicalcenter.roleservice.entity.User;
 import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
+import com.medicalcenter.roleservice.mapper.UserMapper;
 import com.medicalcenter.roleservice.service.impl.RoleServiceImpl;
 import com.medicalcenter.roleservice.service.impl.UserServiceImpl;
 import io.tej.SwaggerCodgen.api.UsersApi;
 import io.tej.SwaggerCodgen.model.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class UserController implements UsersApi {
 
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
-    private final ModelMapper modelMapper;
+    private final UserMapper userMapper;
 
     @Override
     public ResponseEntity<UserDto> addRoleToUser(String userId, String roleId) {
@@ -37,7 +36,7 @@ public class UserController implements UsersApi {
             userRoles.add(role);
         }
         user = userService.saveUser(user);
-        var userDto = modelMapper.map(user, UserDto.class);
+        var userDto = userMapper.entityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatusCode.valueOf(200));
     }
 
@@ -50,7 +49,7 @@ public class UserController implements UsersApi {
                 .createdAt(LocalDateTime.now())
                 .build();
         user = userService.saveUser(user);
-        var userDto = modelMapper.map(user, UserDto.class);
+        var userDto = userMapper.entityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatusCode.valueOf(200));
     }
 
@@ -71,7 +70,7 @@ public class UserController implements UsersApi {
             throw new ResourceNotFoundException("User with id " + userId + "does not have role with ID " + roleId);
         }
         user = userService.updateUser(UUID.fromString(userId), user);
-        var userDto = modelMapper.map(user, UserDto.class);
+        var userDto = userMapper.entityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatusCode.valueOf(200));
     }
 
@@ -79,15 +78,15 @@ public class UserController implements UsersApi {
     public ResponseEntity<List<UserDto>> getAllUsers() {
         var users = userService.getAllUsers();
         var dtoUsers = users.stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
+                .map(userMapper::entityToDto)
+                .toList();
         return new ResponseEntity<>(dtoUsers, HttpStatusCode.valueOf(200));
     }
 
     @Override
     public ResponseEntity<UserDto> getUserById(String userId) {
         var user = userService.getUserById(UUID.fromString(userId)).orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
-        var userDto = modelMapper.map(user, UserDto.class);
+        var userDto = userMapper.entityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatusCode.valueOf(200));
     }
 }

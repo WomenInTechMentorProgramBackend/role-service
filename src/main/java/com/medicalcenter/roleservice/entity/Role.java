@@ -46,9 +46,9 @@ public class Role implements Serializable {
     private String updatedBy;
     @ManyToMany
     @JoinTable(
-            name = "users_permissions",
+            name = "roles_permissions",
             joinColumns = @JoinColumn(
-                    name = "users_id", referencedColumnName = "id"),
+                    name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "permission_id", referencedColumnName = "id"))
     private List<Permission> permissions;

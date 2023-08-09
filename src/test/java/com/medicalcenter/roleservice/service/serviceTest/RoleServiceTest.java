@@ -1,4 +1,4 @@
-package com.medicalcenter.roleservice.service;
+package com.medicalcenter.roleservice.service.serviceTest;
 
 import com.medicalcenter.roleservice.entity.Role;
 import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
@@ -124,7 +124,7 @@ public class RoleServiceTest {
 
         role.setName("Updated Role");
         role.setDescription("Updated Description");
-        role.setActive(false);
+        role.setIsActive(false);
         role.setCreatedBy("Updated User");
 
         var updatedRole = roleService.updateRole(roleId, role);
@@ -132,7 +132,7 @@ public class RoleServiceTest {
         assertNotNull(updatedRole);
         assertEquals(role.getName(), updatedRole.getName());
         assertEquals(role.getDescription(), updatedRole.getDescription());
-        assertEquals(role.isActive(), updatedRole.isActive());
+        assertEquals(role.getIsActive(), updatedRole.getIsActive());
         verify(roleRepository, times(1)).findById(roleId);
         verify(roleRepository, times(1)).save(role);
     }
@@ -144,7 +144,7 @@ public class RoleServiceTest {
         var updatedRole = new Role();
         updatedRole.setName("Updated Role");
         updatedRole.setDescription("Updated Description");
-        updatedRole.setActive(false);
+        updatedRole.setIsActive(false);
         updatedRole.setCreatedBy("Updated User");
 
         when(roleRepository.findById(roleId)).thenReturn(Optional.empty());

@@ -2,14 +2,20 @@ package com.medicalcenter.roleservice.mapper;
 
 import com.medicalcenter.roleservice.entity.Permission;
 import io.tej.SwaggerCodgen.model.PermissionDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
+
+import static java.util.Objects.isNull;
 
 @Component
 public class PermissionMapper implements AbstractMapper<Permission, PermissionDto> {
+    @Value("${offset_id}")
+    private String offsetID;
 
     @Override
     public PermissionDto entityToDto(Permission entity) {
@@ -17,9 +23,9 @@ public class PermissionMapper implements AbstractMapper<Permission, PermissionDt
                 .id(entity.getId().toString())
                 .name(entity.getName())
                 .description(entity.getDescription())
-                .createdAt(OffsetDateTime.from(entity.getCreatedAt()))
+                .createdAt(!isNull(entity.getCreatedAt()) ? entity.getCreatedAt().atOffset(ZoneOffset.of(offsetID)) : null)
                 .createdBy(entity.getCreatedBy())
-                .updatedAt(OffsetDateTime.from(entity.getUpdatedAt()))
+                .updatedAt(!isNull(entity.getUpdatedAt()) ? entity.getUpdatedAt().atOffset(ZoneOffset.of(offsetID)) : null)
                 .updatedBy(entity.getUpdatedBy())
                 .isActive(entity.isActive());
     }
@@ -27,12 +33,12 @@ public class PermissionMapper implements AbstractMapper<Permission, PermissionDt
     @Override
     public Permission dtoToEntity(PermissionDto dto) {
         return Permission.builder()
-                .id(UUID.fromString(dto.getId()))
+                .id(!isNull(dto.getId()) ? UUID.fromString(dto.getId()) : null)
                 .name(dto.getName())
                 .description(dto.getDescription())
-                .createdAt(dto.getCreatedAt().toLocalDateTime())
+                .createdAt(!isNull(dto.getCreatedAt()) ? dto.getCreatedAt().toLocalDateTime() : null)
                 .createdBy(dto.getCreatedBy())
-                .updatedAt(dto.getUpdatedAt().toLocalDateTime())
+                .updatedAt(!isNull(dto.getUpdatedAt()) ? dto.getUpdatedAt().toLocalDateTime() : null)
                 .updatedBy(dto.getUpdatedBy())
                 .isActive(dto.getIsActive())
                 .build();

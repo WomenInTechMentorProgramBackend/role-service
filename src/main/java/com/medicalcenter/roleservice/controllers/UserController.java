@@ -8,6 +8,8 @@ import com.medicalcenter.roleservice.service.impl.RoleServiceImpl;
 import com.medicalcenter.roleservice.service.impl.UserServiceImpl;
 import io.tej.SwaggerCodgen.api.UsersApi;
 import io.tej.SwaggerCodgen.model.UserDto;
+import io.tej.SwaggerCodgen.model.UsersModel;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@Transactional
 public class UserController implements UsersApi {
 
     private final UserServiceImpl userService;
@@ -45,6 +48,7 @@ public class UserController implements UsersApi {
         var role = roleService.getRoleById(UUID.fromString(roleId)).orElseThrow(() -> new ResourceNotFoundException("Role with ID " + roleId + " not found"));
         var user = User.builder()
                 .roles(List.of(role))
+                .externalId(UUID.fromString(userId))
                 .createdBy("admin")
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -75,12 +79,13 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<UsersModel> getAllUsers() {
         var users = userService.getAllUsers();
-        var dtoUsers = users.stream()
+        var usersModel = new UsersModel()
+                .users(users.stream()
                 .map(userMapper::entityToDto)
-                .toList();
-        return new ResponseEntity<>(dtoUsers, HttpStatusCode.valueOf(200));
+                .toList());
+        return new ResponseEntity<>(usersModel, HttpStatusCode.valueOf(200));
     }
 
     @Override

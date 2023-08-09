@@ -49,10 +49,22 @@ paths:
                 $ref: '#/components/schemas/UserDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description:  Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '409':
           description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /users:
     get:
       tags:
@@ -65,11 +77,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserDto'
+                $ref: '#/components/schemas/UsersModel'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /users/{userId}/addRole/{roleId}:
     put:
       tags:
@@ -99,10 +113,22 @@ paths:
                 $ref: '#/components/schemas/UserDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: User or role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '409':
           description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /users/{userId}/deleteRole/{roleId}:
     put:
       tags:
@@ -132,10 +158,22 @@ paths:
                 $ref: '#/components/schemas/UserDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: User or role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /users/{userId}:
     get:
       tags:
@@ -159,10 +197,22 @@ paths:
                 $ref: '#/components/schemas/UserDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     delete:
       tags:
         - user
@@ -181,10 +231,22 @@ paths:
           description: Successful operation
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /roles:
     get:
       tags:
@@ -197,11 +259,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RoleDto'
+                $ref: '#/components/schemas/RolesModel'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     post:
       tags:
         - role
@@ -224,8 +288,16 @@ paths:
                 $ref: '#/components/schemas/RoleDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '409':
           description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /roles/{roleId}:
     get:
       tags:
@@ -249,10 +321,22 @@ paths:
                 $ref: '#/components/schemas/RoleDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     put:
       tags:
         - role
@@ -282,10 +366,22 @@ paths:
                 $ref: '#/components/schemas/RoleDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '409':
           description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     delete:
       tags:
         - role
@@ -328,9 +424,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PermissionDto'
+                $ref: '#/components/schemas/PermissionsModel'
         '400':
           description: Bad Request
         '404':
@@ -349,11 +443,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PermissionDto'
+                $ref: '#/components/schemas/PermissionsModel'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /permissions/{roleId}:
     post:
       tags:
@@ -377,10 +473,22 @@ paths:
                 $ref: '#/components/schemas/PermissionDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '409':
           description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /permissions/{permissionId}:
     get:
       tags:
@@ -404,10 +512,22 @@ paths:
                 $ref: '#/components/schemas/PermissionDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Permission not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     put:
       tags:
         - permission
@@ -437,10 +557,22 @@ paths:
                 $ref: '#/components/schemas/PermissionDto'
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     delete:
       tags:
         - permission
@@ -459,10 +591,22 @@ paths:
           description: Successful operation
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Permission not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '405':
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
     UserDto:
@@ -600,7 +744,7 @@ components:
       required:
         - name
         - isActive
-    ErrorModel:
+    ErrorMessage:
       type: object
       properties:
         statusCode:
@@ -610,10 +754,35 @@ components:
           type: string
         timestamp:
           type: string
+          format: "date-time"
         message:
           type: string
         description:
           type: string
+    UsersModel:
+      type: object
+      properties:
+        users:
+          type: array
+          description: "Users"
+          items:
+            $ref: "#/components/schemas/UserDto"
+    RolesModel:
+      type: object
+      properties:
+        roles:
+          type: array
+          description: "Roles"
+          items:
+            $ref: "#/components/schemas/RoleDto"
+    PermissionsModel:
+      type: object
+      properties:
+        permissions:
+          type: array
+          description: "Permissions"
+          items:
+            $ref: "#/components/schemas/PermissionDto"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

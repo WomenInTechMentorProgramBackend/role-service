@@ -1,4 +1,4 @@
-package com.medicalcenter.roleservice.service;
+package com.medicalcenter.roleservice.service.serviceTest;
 
 import com.medicalcenter.roleservice.entity.User;
 import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;

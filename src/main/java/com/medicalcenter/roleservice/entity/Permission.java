@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table (name = "roles")
+@Table(name = "permissions")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role implements Serializable {
+public class Permission implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
@@ -31,7 +31,7 @@ public class Role implements Serializable {
 
     @Column(name = "is_active", nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
     @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
-    private Boolean isActive = false;
+    private boolean isActive = false;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -44,12 +44,4 @@ public class Role implements Serializable {
 
     @Column(name = "updated_by", length = 50)
     private String updatedBy;
-    @ManyToMany
-    @JoinTable(
-            name = "roles_permissions",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "permission_id", referencedColumnName = "id"))
-    private List<Permission> permissions;
 }

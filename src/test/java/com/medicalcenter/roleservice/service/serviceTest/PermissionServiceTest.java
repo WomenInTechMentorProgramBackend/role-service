@@ -1,4 +1,4 @@
-package com.medicalcenter.roleservice.service;
+package com.medicalcenter.roleservice.service.serviceTest;
 
 import com.medicalcenter.roleservice.entity.Permission;
 import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
@@ -128,7 +128,7 @@ public class PermissionServiceTest {
 
         permission.setName("Updated Permission");
         permission.setDescription("Updated Description");
-        permission.setActive(false);
+        permission.setIsActive(false);
         permission.setCreatedAt(LocalDateTime.now());
         permission.setCreatedBy("Updated User");
 
@@ -137,7 +137,7 @@ public class PermissionServiceTest {
         assertNotNull(updatedPermission);
         assertEquals(permission.getName(), updatedPermission.getName());
         assertEquals(permission.getDescription(), updatedPermission.getDescription());
-        assertEquals(permission.isActive(), updatedPermission.isActive());
+        assertEquals(permission.getIsActive(), updatedPermission.getIsActive());
         verify(permissionRepository, times(1)).findById(permissionId);
         verify(permissionRepository, times(1)).save(permission);
     }
@@ -149,7 +149,7 @@ public class PermissionServiceTest {
         var updatedPermission = new Permission();
         updatedPermission.setName("Updated Permission");
         updatedPermission.setDescription("Updated Description");
-        updatedPermission.setActive(false);
+        updatedPermission.setIsActive(false);
         updatedPermission.setCreatedAt(LocalDateTime.now());
         updatedPermission.setCreatedBy("Updated User");
 

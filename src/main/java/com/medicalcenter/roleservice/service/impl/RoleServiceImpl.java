@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role saveRole(Role role) {
-        Optional<Role> savedRole = roleRepository.findByName(role.getName());
+        var savedRole = roleRepository.findByName(role.getName());
         if (savedRole.isPresent()) {
             throw new ObjectAlreadyExistException("Role already exists with name: " + role.getName());
         }
@@ -43,12 +43,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role updateRole(UUID id, Role updatedRole) {
-        Optional<Role> existingRoleOptional = roleRepository.findById(id);
+        var existingRoleOptional = roleRepository.findById(id);
         if (existingRoleOptional.isPresent()) {
-            Role existingRole = existingRoleOptional.get();
+            var existingRole = existingRoleOptional.get();
             existingRole.setName(updatedRole.getName());
             existingRole.setDescription(updatedRole.getDescription());
-            existingRole.setActive(updatedRole.isActive());
+            existingRole.setIsActive(updatedRole.getIsActive());
             existingRole.setUpdatedAt(updatedRole.getUpdatedAt());
             existingRole.setUpdatedBy(updatedRole.getUpdatedBy());
             return roleRepository.save(existingRole);

@@ -31,7 +31,7 @@ public class Permission implements Serializable {
 
     @Column(name = "is_active", nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
     @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
-    private boolean isActive = false;
+    private Boolean isActive = false;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

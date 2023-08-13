@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-        Optional<User> saveUser = userRepository.findByExternalId(user.getExternalId());
+        var saveUser = userRepository.findByExternalId(user.getExternalId());
         if (saveUser.isPresent()) {
             throw new ObjectAlreadyExistException("User already exists with externalId: " + user.getExternalId());
         }
@@ -42,9 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UUID id, User updatedUser) {
-        Optional<User> existingUserOptional = userRepository.findById(id);
+        var existingUserOptional = userRepository.findById(id);
         if(existingUserOptional.isPresent()) {
-            User existingUser = existingUserOptional.get();
+            var existingUser = existingUserOptional.get();
             existingUser.setExternalId(updatedUser.getExternalId());
             existingUser.setCreatedAt(updatedUser.getCreatedAt());
             existingUser.setUpdatedAt(updatedUser.getUpdatedAt());

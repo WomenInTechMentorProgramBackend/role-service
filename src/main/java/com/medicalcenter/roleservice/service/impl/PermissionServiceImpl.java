@@ -34,7 +34,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission savePermission(Permission permission) {
-        Optional<Permission> savedPermission = permissionRepository.findByName(permission.getName());
+        var savedPermission = permissionRepository.findByName(permission.getName());
         if (savedPermission.isPresent()) {
             throw new ObjectAlreadyExistException("Permission already exists with name: " + permission.getName());
         }
@@ -43,11 +43,12 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission updatePermission(UUID id, Permission updatedPermission) {
-        Optional<Permission> existingPermissionOptional = permissionRepository.findById(id);
+        var existingPermissionOptional = permissionRepository.findById(id);
         if (existingPermissionOptional.isPresent()) {
-            Permission existingPermission = existingPermissionOptional.get();
+            var existingPermission = existingPermissionOptional.get();
             existingPermission.setName(updatedPermission.getName());
             existingPermission.setDescription(updatedPermission.getDescription());
+            existingPermission.setIsActive(updatedPermission.getIsActive());
             existingPermission.setCreatedAt(updatedPermission.getCreatedAt());
             existingPermission.setCreatedBy(updatedPermission.getCreatedBy());
             existingPermission.setUpdatedAt(updatedPermission.getUpdatedAt());

@@ -1,0 +1,788 @@
+---
+openapi: 3.0.3
+info:
+  description: This is a sample server role-service.
+  version: "1.0"
+  title: Swagger role-service
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: wit2022.v1@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8090/role-service/v1
+tags:
+  - name: user
+    description: this service stores short information about the user
+  - name: role
+    description: there are only a few roles
+  - name: permission
+    description: permissions are used to access certain services
+paths:
+  /users/{userId}/{roleId}:
+    post:
+      tags:
+        - user
+      summary: Add a new user to the service
+      description: ""
+      operationId: addUser
+      parameters:
+        - name: userId
+          in: path
+          description: external Id
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description:  Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get all users
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /users/{userId}/addRole/{roleId}:
+    put:
+      tags:
+        - user
+      summary: "Update an existing user: add role"
+      description: ""
+      operationId: addRoleToUser
+      parameters:
+        - name: userId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: User or role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /users/{userId}/deleteRole/{roleId}:
+    put:
+      tags:
+        - user
+      summary: "Update an existing user: delete role"
+      description: ""
+      operationId: deleteUserRole
+      parameters:
+        - name: userId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: User or role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      summary: Get user by id
+      description: ""
+      operationId: getUserById
+      parameters:
+        - name: userId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - user
+      summary: Delete user by id
+      description: ""
+      operationId: deleteUserById
+      parameters:
+        - name: userId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /roles:
+    get:
+      tags:
+        - role
+      summary: Get all roles
+      operationId: getAllRoles
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolesModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+        - role
+      summary: Add a new role to the service
+      description: ""
+      operationId: addRole
+      requestBody:
+        description: Save role in the service
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDto'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /roles/{roleId}:
+    get:
+      tags:
+        - role
+      summary: Get role by id
+      description: ""
+      operationId: getRoleById
+      parameters:
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+        - role
+      summary: Update existing role
+      description: ""
+      operationId: updateRole
+      requestBody:
+        description: Update role in the service
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDto'
+        required: true
+      parameters:
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - role
+      summary: Delete role by id
+      description: ""
+      operationId: deleteRoleById
+      parameters:
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Bad Request
+        '404':
+          description: Role not found
+        '405':
+          description: Validation exception
+  /roles/{roleId}/permissions:
+    get:
+      tags:
+        - role
+      summary: Get all role permissions by roleId
+      description: ""
+      operationId: getAllRolePermissionsByRoleId
+      parameters:
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsModel'
+        '400':
+          description: Bad Request
+        '404':
+          description: Role not found
+        '405':
+          description: Validation exception
+  /permissions:
+    get:
+      tags:
+        - permission
+      summary: Get all permissions
+      operationId: getAllPermissions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /permissions/{roleId}:
+    post:
+      tags:
+        - permission
+      summary: Add a new permission to the service
+      description: ""
+      operationId: addPermission
+      parameters:
+        - name: roleId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Object already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /permissions/{permissionId}:
+    get:
+      tags:
+        - permission
+      summary: Get permission by id
+      description: ""
+      operationId: getPermissionById
+      parameters:
+        - name: permissionId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Permission not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+        - permission
+      summary: Update an existing permission
+      description: ""
+      operationId: updatePermission
+      requestBody:
+        description: Update permission in the service
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionDto'
+        required: true
+      parameters:
+        - name: permissionId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionDto'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - permission
+      summary: Delete permission by id
+      description: ""
+      operationId: deletePermissionById
+      parameters:
+        - name: permissionId
+          in: path
+          description: Id that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Permission not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+components:
+  schemas:
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        externalId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          uniqueItems: true
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        createdAt:
+          type: string
+          minLength: 1
+          maxLength: 255
+          format: "date-time"
+        updatedAt:
+          type: string
+          minLength: 1
+          maxLength: 255
+          format: "date-time"
+        createdBy:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "u550e8400-e29b-41d4-a716-446655440000"
+        updatedBy:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "u550e8400-e29b-41d4-a716-446655440000"
+        roles:
+          type: array
+          description: "User roles"
+          items:
+           $ref: "#/components/schemas/RoleDto"
+      required:
+        - id
+        - externalId
+        - roles
+    RoleDto:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          uniqueItems: true
+          example: "admin"
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "something about this role"
+        permissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PermissionDto"
+        createdAt:
+          type: string
+          minLength: 1
+          maxLength: 255
+          format: "date-time"
+        updatedAt:
+          type: string
+          minLength: 1
+          maxLength: 255
+          format: "date-time"
+        createdBy:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "u550e8400-e29b-41d4-a716-446655440000"
+        updatedBy:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "u550e8400-e29b-41d4-a716-446655440000"
+        isActive:
+          type: boolean
+      required:
+        - name
+        - isActive
+    PermissionDto:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          uniqueItems: true
+          example: "creatUser"
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "something about permission"
+        createdAt:
+          type: string
+          minLength: 1
+          maxLength: 255
+          format: "date-time"
+        updatedAt:
+          type: string
+          minLength: 1
+          maxLength: 255
+          format: "date-time"
+        createdBy:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "u550e8400-e29b-41d4-a716-446655440000"
+        updatedBy:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "u550e8400-e29b-41d4-a716-446655440000"
+        isActive:
+          type: boolean
+      required:
+        - name
+        - isActive
+    ErrorMessage:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        httpStatus:
+          type: string
+        timestamp:
+          type: string
+          format: "date-time"
+        message:
+          type: string
+        description:
+          type: string
+    UsersModel:
+      type: object
+      properties:
+        users:
+          type: array
+          description: "Users"
+          items:
+            $ref: "#/components/schemas/UserDto"
+    RolesModel:
+      type: object
+      properties:
+        roles:
+          type: array
+          description: "Roles"
+          items:
+            $ref: "#/components/schemas/RoleDto"
+    PermissionsModel:
+      type: object
+      properties:
+        permissions:
+          type: array
+          description: "Permissions"
+          items:
+            $ref: "#/components/schemas/PermissionDto"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.time.LocalDateTime;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,7 @@ public class RoleServiceTest {
                 .name("Role 1")
                 .description("Description 1")
                 .isActive(true)
+                .createdAt(LocalDateTime.now())
                 .createdBy("Test User 1")
                 .build();
     }
@@ -49,6 +51,7 @@ public class RoleServiceTest {
                 .name("Role 2")
                 .description("Description 2")
                 .isActive(true)
+                .createdAt(LocalDateTime.now())
                 .createdBy("Test User 2")
                 .build();
 
@@ -125,6 +128,7 @@ public class RoleServiceTest {
         role.setName("Updated Role");
         role.setDescription("Updated Description");
         role.setIsActive(false);
+        role.setCreatedAt(LocalDateTime.now());
         role.setCreatedBy("Updated User");
 
         var updatedRole = roleService.updateRole(roleId, role);
@@ -145,6 +149,7 @@ public class RoleServiceTest {
         updatedRole.setName("Updated Role");
         updatedRole.setDescription("Updated Description");
         updatedRole.setIsActive(false);
+        updatedRole.setCreatedAt(LocalDateTime.now());
         updatedRole.setCreatedBy("Updated User");
 
         when(roleRepository.findById(roleId)).thenReturn(Optional.empty());

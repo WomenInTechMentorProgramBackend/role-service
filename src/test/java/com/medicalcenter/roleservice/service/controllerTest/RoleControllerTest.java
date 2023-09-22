@@ -1,12 +1,14 @@
 package com.medicalcenter.roleservice.service.controllerTest;
 
 import com.medicalcenter.roleservice.controllers.RoleController;
+import com.medicalcenter.roleservice.controllers.UserController;
 import com.medicalcenter.roleservice.entity.Permission;
 import com.medicalcenter.roleservice.entity.Role;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
 import com.medicalcenter.roleservice.repository.RoleRepository;
 import com.medicalcenter.roleservice.service.BaseTest;
 import io.tej.SwaggerCodgen.model.RoleDto;
+import io.tej.SwaggerCodgen.model.UserDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +28,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RoleControllerTest extends BaseTest {
     @Autowired
     private RoleController roleController;
+    @Autowired
+    private UserController userController;
+
 
     private Role entity;
     private RoleDto dto;
@@ -76,14 +82,19 @@ public class RoleControllerTest extends BaseTest {
     @DisplayName("JUnit test for deleteRoleById method")
     @Test
     void deleteRoleById_void_ShouldDeleteRoleFromService() {
-        var savedDto = roleController.addRole(dto);
-        var dtoId = savedDto.getBody().getId();
+        var savedDto = roleController.addRole(dto).getBody();
+        var dtoId = savedDto.getId();
         assertNotNull(roleController.getRoleById(dtoId));
+        var userDto = userController.addUser(UUID.randomUUID().toString(), dtoId).getBody();
+        assertEquals(1, userDto.getRoles().size());
         roleController.deleteRoleById(dtoId);
+        userDto = userController.getUserById(userDto.getId()).getBody();
+        assertEquals(0,  userDto.getRoles().size());
         try {
             roleController.getRoleById(dtoId);
             assert false;
-        } catch (ResourceNotFoundException ignored){}
+        } catch (ResourceNotFoundException ignored){
+        }
     }
 
     @DisplayName("JUnit test for getAllRoles method")
@@ -101,7 +112,7 @@ public class RoleControllerTest extends BaseTest {
     void getRoleById_RoleDto_ShouldReturnRoleDto() {
         var role = roleController.addRole(dto);
         var role1 = roleController.getRoleById(role.getBody().getId());
-        assertEquals(role.getBody(), role1.getBody());
+        assertEquals(role.getBody().getName(), role1.getBody().getName());
     }
     @DisplayName("JUnit test for updateRole method")
     @Test

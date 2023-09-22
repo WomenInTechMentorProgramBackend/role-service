@@ -52,4 +52,12 @@ public class Role implements Serializable {
             inverseJoinColumns = @JoinColumn(
                     name = "permission_id", referencedColumnName = "id"))
     private List<Permission> permissions;
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "users_id", referencedColumnName = "id"))
+    private List<User> users;
 }

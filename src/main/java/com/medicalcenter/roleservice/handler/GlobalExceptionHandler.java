@@ -16,45 +16,30 @@ import java.time.OffsetDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        log.error("ResourceNotFoundException: {}", ex.getMessage(), ex);
+    private ResponseEntity<ErrorMessage> ErrorResponse(HttpStatus status, Exception ex, WebRequest request) {
+        log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
 
         ErrorMessage message = new ErrorMessage();
-        message.setStatusCode(HttpStatus.NOT_FOUND.value());
-        message.setHttpStatus(HttpStatus.NOT_FOUND.toString());
+        message.setStatusCode(status.value());
+        message.setHttpStatus(status.toString());
         message.setTimestamp(OffsetDateTime.now());
         message.setMessage(ex.getMessage());
         message.setDescription(request.getDescription(false));
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        return ResponseEntity.status(status).body(message);
+    }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        return ErrorResponse(HttpStatus.NOT_FOUND, ex, request);
     }
 
     @ExceptionHandler(ObjectAlreadyExistException.class)
     public ResponseEntity<ErrorMessage> handleObjectAlreadyExistException (ObjectAlreadyExistException ex, WebRequest request) {
-        log.error("ObjectAlreadyExistException: {}", ex.getMessage(), ex);
-
-        ErrorMessage message = new ErrorMessage();
-        message.setStatusCode(HttpStatus.CONFLICT.value());
-        message.setHttpStatus(HttpStatus.CONFLICT.toString());
-        message.setTimestamp(OffsetDateTime.now());
-        message.setMessage(ex.getMessage());
-        message.setDescription(request.getDescription(false));
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+        return ErrorResponse(HttpStatus.CONFLICT, ex, request);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleDefaultException (Exception ex, WebRequest request) {
-        log.error("Unexpected exception: {}", ex.getMessage(), ex);
-
-        ErrorMessage message = new ErrorMessage();
-        message.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        message.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
-        message.setTimestamp(OffsetDateTime.now());
-        message.setMessage(ex.getMessage());
-        message.setDescription(request.getDescription(false));
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+        return ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex, request);
     }
 }

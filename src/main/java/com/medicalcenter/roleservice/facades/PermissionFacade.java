@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,9 +25,11 @@ public class PermissionFacade {
     private final PermissionDtoPermissionMapper permissionMapper;
 
     public PermissionDto addPermission(String roleId, PermissionDto permissionDto) {
-        var permission = permissionMapper.permissionDtoToPermission(permissionDto);
-        permission = permissionService.savePermission(permission);
         var role = roleService.getRoleById(UUID.fromString(roleId)).orElseThrow(() -> new ResourceNotFoundException("Role with ID " + roleId + " not found"));
+        var permission = permissionMapper.permissionDtoToPermission(permissionDto);
+        permission.setCreatedAt(LocalDateTime.now());
+        permission.setCreatedBy("admin");
+        permission = permissionService.savePermission(permission);
         role.getPermissions().add(permission);
         roleService.updateRole(UUID.fromString(roleId), role);
         return permissionMapper.permissionToPermissionDto(permission);

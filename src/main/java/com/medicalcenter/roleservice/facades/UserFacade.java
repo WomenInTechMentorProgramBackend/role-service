@@ -56,10 +56,12 @@ public class UserFacade {
         var user = userService.getUserById(UUID.fromString(userId)).orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
         var role = roleService.getRoleById(UUID.fromString(roleId)).orElseThrow(() -> new ResourceNotFoundException("Role with ID " + roleId + " not found"));
         var userRoles = user.getRoles();
-        if (userRoles.contains(role)) {
+        if (userRoles.contains(role) && userRoles.size() > 1) {
             userRoles.remove(role);
         } else {
-            throw new ResourceNotFoundException("User with id " + userId + "does not have role with ID " + roleId);
+            throw userRoles.size() > 1 ?
+                    new ResourceNotFoundException("User with id " + userId + "does not have role with ID " + roleId) :
+                    new RuntimeException("The numbers of roles cannot be less then 1");
         }
         user = userService.updateUser(UUID.fromString(userId), user);
         return userMapper.userToUserDto(user);

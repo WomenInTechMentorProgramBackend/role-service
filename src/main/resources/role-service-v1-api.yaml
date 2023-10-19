@@ -720,7 +720,7 @@ components:
           minLength: 1
           maxLength: 30
           uniqueItems: true
-          example: "creatUser"
+          example: "createUser"
         description:
           type: string
           minLength: 1

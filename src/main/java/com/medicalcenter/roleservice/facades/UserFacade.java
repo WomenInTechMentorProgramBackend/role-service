@@ -32,7 +32,7 @@ public class UserFacade {
         } else {
             userRoles.add(role);
         }
-        user = userService.saveUser(user);
+        user = userService.updateUser(user.getId(), user);
         return userMapper.userToUserDto(user);
     }
 

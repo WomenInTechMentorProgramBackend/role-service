@@ -5,6 +5,7 @@ import com.medicalcenter.roleservice.controllers.UserController;
 import com.medicalcenter.roleservice.entity.Role;
 import com.medicalcenter.roleservice.entity.User;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
+import com.medicalcenter.roleservice.repository.RoleRepository;
 import com.medicalcenter.roleservice.repository.UserRepository;
 import com.medicalcenter.roleservice.service.BaseTest;
 import io.tej.SwaggerCodgen.model.RoleDto;
@@ -30,9 +31,10 @@ public class UserControllerTest extends BaseTest {
     private User entity;
     private UserDto dto;
     private RoleDto roleDto;
-    @AfterEach
-    void clearDatabase(@Autowired UserRepository userRepository) {
+    @BeforeEach
+    void clearDatabase(@Autowired UserRepository userRepository, @Autowired RoleRepository roleRepository) {
         userRepository.deleteAll();
+        roleRepository.deleteAll();
     }
     @BeforeAll
     public void setUp() {
@@ -66,11 +68,11 @@ public class UserControllerTest extends BaseTest {
                             .name("doctor")
                             .description("smth")
                             .isActive(true);
-        roleDto = roleController.addRole(roleDto).getBody();
     }
     @DisplayName("JUnit test for addUser method")
     @Test
     void addUser_NewUser_ShouldReturnUserDto() {
+        roleDto = roleController.addRole(roleDto).getBody();
         var result = userController.addUser(dto.getExternalId(), roleDto.getId());
         assertNotNull(result);
         assertEquals(roleDto.getId(), result.getBody().getRoles().get(0).getId());
@@ -79,6 +81,7 @@ public class UserControllerTest extends BaseTest {
     @DisplayName("JUnit test for deleteUserById method")
     @Test
     void deleteUserById_void_ShouldDeleteUserFromService() {
+        roleDto = roleController.addRole(roleDto).getBody();
         var savedDto = userController.addUser(dto.getExternalId(), roleDto.getId());
         var dtoId = savedDto.getBody().getId();
         assertNotNull(userController.getUserById(dtoId));
@@ -91,15 +94,24 @@ public class UserControllerTest extends BaseTest {
     @DisplayName("JUnit test for deleteUserRole method")
     @Test
     void deleteUserRole_void_ShouldDeleteRoleFromUser() {
-        var savedDto = userController.addUser(dto.getExternalId(), roleDto.getId());
-        var dtoId = savedDto.getBody().getId();
-        savedDto = userController.deleteUserRole(dtoId, roleDto.getId());
-        assertEquals(savedDto.getBody().getRoles().size(), 0);
+        roleDto = roleController.addRole(roleDto).getBody();
+        var savedDto = userController.addUser(dto.getExternalId(), roleDto.getId()).getBody();
+        roleDto = new RoleDto()
+                .name("doctor12")
+                .description("smth12")
+                .isActive(true);
+        roleDto = roleController.addRole(roleDto).getBody();
+        var dtoId = savedDto.getId();
+        savedDto = userController.addRoleToUser(dtoId, roleDto.getId()).getBody();
+        assertEquals(2, savedDto.getRoles().size());
+        savedDto = userController.deleteUserRole(dtoId, roleDto.getId()).getBody();
+        assertEquals(1, savedDto.getRoles().size());
     }
 
     @DisplayName("JUnit test for getAllUsers method")
     @Test
     void getAllUsers_UsersModel_ShouldReturnAllUsersFromService() {
+        roleDto = roleController.addRole(roleDto).getBody();
         userController.addUser(UUID.randomUUID().toString(), roleDto.getId());
         userController.addUser(UUID.randomUUID().toString(), roleDto.getId());
         userController.addUser(UUID.randomUUID().toString(), roleDto.getId());
@@ -110,6 +122,7 @@ public class UserControllerTest extends BaseTest {
     @DisplayName("JUnit test for getUserById method")
     @Test
     void getUserById_UserDto_ShouldReturnUserDto() {
+        roleDto = roleController.addRole(roleDto).getBody();
         var user = userController.addUser(UUID.randomUUID().toString(), roleDto.getId());
         var user1 = userController.getUserById(user.getBody().getId());
         assertEquals(user.getBody(), user1.getBody());

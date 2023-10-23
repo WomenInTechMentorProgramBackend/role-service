@@ -46,4 +46,8 @@ Before executing the commands, make sure you have Maven and Docker installed.
 
 Congratulations! Our microservice is running in a container
 
+
 ## Application API: ##
+
+* role-service swagger:
+```http://localhost:8090/swagger-ui/index.html```

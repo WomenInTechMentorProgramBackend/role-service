@@ -1,6 +1,6 @@
 package com.medicalcenter.roleservice.handler;
 
-import com.medicalcenter.roleservice.dto.ErrorMessage;
+import io.tej.SwaggerCodgen.model.ErrorMessage;
 import com.medicalcenter.roleservice.exception.ObjectAlreadyExistException;
 import com.medicalcenter.roleservice.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,51 +10,36 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private ResponseEntity<ErrorMessage> ErrorResponse(HttpStatus status, Exception ex, WebRequest request) {
+        log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage(), ex);
+
+        ErrorMessage message = new ErrorMessage();
+        message.setStatusCode(status.value());
+        message.setHttpStatus(status.toString());
+        message.setTimestamp(OffsetDateTime.now());
+        message.setMessage(ex.getMessage());
+        message.setDescription(request.getDescription(false));
+
+        return ResponseEntity.status(status).body(message);
+    }
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        log.error("ResourceNotFoundException: {}", ex.getMessage(), ex);
-
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND,
-                new Date(),
-                ex.getMessage(),
-                request.getDescription(false));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        return ErrorResponse(HttpStatus.NOT_FOUND, ex, request);
     }
 
     @ExceptionHandler(ObjectAlreadyExistException.class)
     public ResponseEntity<ErrorMessage> handleObjectAlreadyExistException (ObjectAlreadyExistException ex, WebRequest request) {
-        log.error("ObjectAlreadyExistException: {}", ex.getMessage(), ex);
-
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.CONFLICT.value(),
-                HttpStatus.CONFLICT,
-                new Date(),
-                ex.getMessage(),
-                request.getDescription(false));
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+        return ErrorResponse(HttpStatus.CONFLICT, ex, request);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleDefaultException (Exception ex, WebRequest request) {
-        log.error("Unexpected exception: {}", ex.getMessage(), ex);
-
-        ErrorMessage message = new ErrorMessage(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                new Date(),
-                ex.getMessage(),
-                request.getDescription(false));
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+        return ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex, request);
     }
 }

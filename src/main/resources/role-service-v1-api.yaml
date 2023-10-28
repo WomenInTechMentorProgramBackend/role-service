@@ -457,6 +457,13 @@ paths:
       summary: Add a new permission to the service
       description: ""
       operationId: addPermission
+      requestBody:
+        description: Save permission in the service
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionDto'
+        required: true
       parameters:
         - name: roleId
           in: path
@@ -713,7 +720,7 @@ components:
           minLength: 1
           maxLength: 30
           uniqueItems: true
-          example: "creatUser"
+          example: "createUser"
         description:
           type: string
           minLength: 1

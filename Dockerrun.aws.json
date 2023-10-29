@@ -1,0 +1,106 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "containerDefinitions": [
+    {
+      "name": "db",
+      "image": "863863988126.dkr.ecr.eu-central-1.amazonaws.com/role-service/db",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 5433,
+          "containerPort": 5432
+        }
+      ],
+      "environment": [
+        {
+          "name": "POSTGRES_USER",
+          "value": "postgres"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "value": "123"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "value": "roleservice_db"
+        },
+        {
+          "name": "POSTGRES_HOST_AUTH_METHOD",
+          "value": "trust"
+        }
+      ],
+      "command": ["postgres", "-c", "max_connections=300"]
+    },
+    {
+      "name": "pgadmin",
+      "image": "863863988126.dkr.ecr.eu-central-1.amazonaws.com/role-service/pgadmin",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 5050,
+          "containerPort": 80
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "db",
+          "condition": "start"
+        }
+      ],
+      "environment": [
+        {
+          "name": "PGADMIN_DEFAULT_EMAIL",
+          "value": "wit@wit.com"
+        },
+        {
+          "name": "PGADMIN_DEFAULT_PASSWORD",
+          "value": "password"
+        }
+      ]
+    },
+    {
+      "name": "api",
+      "image": "863863988126.dkr.ecr.eu-central-1.amazonaws.com/role-service/api",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 8090,
+          "containerPort": 8000
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_DATASOURCE_URL",
+          "value": "jdbc:postgresql://db:5432/roleservice_db"
+        },
+        {
+          "name": "SPRING_DATASOURCE_USERNAME",
+          "value": "postgres"
+        },
+        {
+          "name": "SPRING_DATASOURCE_PASSWORD",
+          "value": "123"
+        }
+      ],
+      "volumes": [
+        {
+          "host": {
+            "sourcePath": "./db/changelog"
+          },
+          "container": {
+            "destination": "/liquibase/changelog"
+          }
+        }
+      ],
+      "dependsOn": [
+        {
+          "containerName": "db",
+          "condition": "start"
+        }
+      ]
+    }
+  ]
+}

@@ -13,7 +13,7 @@ Before executing the commands, make sure you have Maven and Docker installed.
 * Go to the project folder and open a terminal in it
 * After that, you need to type the following commands in the terminal:
 
-  `mvn clean package -DskipTests`
+  `mvn clean package`
 
   `mkdir target/dependency`
 
@@ -46,4 +46,9 @@ Before executing the commands, make sure you have Maven and Docker installed.
 
 Congratulations! Our microservice is running in a container
 
+
 ## Application API: ##
+
+* role-service swagger:
+```http://localhost:8090/swagger-ui/index.html```
+

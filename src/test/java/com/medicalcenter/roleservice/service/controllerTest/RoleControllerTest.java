@@ -34,7 +34,7 @@ public class RoleControllerTest extends BaseTest {
 
     private Role entity;
     private RoleDto dto;
-    @AfterEach
+    @BeforeEach
     void clearDatabase(@Autowired RoleRepository roleRepository) {
         roleRepository.deleteAll();
     }

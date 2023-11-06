@@ -34,7 +34,7 @@ public class PermissionControllerTest extends BaseTest {
     private Permission entity;
     private PermissionDto dto;
     private RoleDto roleDto;
-    @AfterEach
+    @BeforeEach
     void clearDatabase(@Autowired RoleRepository roleRepository, @Autowired PermissionRepository permissionRepository) {
         roleRepository.deleteAll();
         permissionRepository.deleteAll();

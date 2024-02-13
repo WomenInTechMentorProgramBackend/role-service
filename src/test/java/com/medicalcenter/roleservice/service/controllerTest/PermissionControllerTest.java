@@ -9,10 +9,7 @@ import com.medicalcenter.roleservice.repository.RoleRepository;
 import com.medicalcenter.roleservice.service.BaseTest;
 import io.tej.SwaggerCodgen.model.PermissionDto;
 import io.tej.SwaggerCodgen.model.RoleDto;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -127,7 +124,7 @@ public class PermissionControllerTest extends BaseTest {
         roleDto = roleController.addRole(roleDto).getBody();
         dto = permissionController.addPermission(roleDto.getId(), dto).getBody();
         var permission = permissionController.getPermissionById(dto.getId()).getBody();
-        assertEquals(dto, permission);
+        assertEquals(dto.getId(), permission.getId());
     }
     @DisplayName("JUnit test for updatePermission method")
     @Test

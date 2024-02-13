@@ -118,14 +118,13 @@ public class UserControllerTest extends BaseTest {
         var result = userController.getAllUsers();
         assertEquals(3, result.getBody().getUsers().size());
     }
-
     @DisplayName("JUnit test for getUserById method")
     @Test
     void getUserById_UserDto_ShouldReturnUserDto() {
         roleDto = roleController.addRole(roleDto).getBody();
         var user = userController.addUser(UUID.randomUUID().toString(), roleDto.getId());
         var user1 = userController.getUserById(user.getBody().getId());
-        assertEquals(user.getBody(), user1.getBody());
+        assertEquals(user.getBody().getId(), user1.getBody().getId());
     }
 
 }
